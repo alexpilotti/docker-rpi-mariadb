@@ -1,9 +1,6 @@
-FROM jsurf/rpi-raspbian:latest
-
-RUN [ "cross-build-start" ]
+FROM balenalib/rpi-raspbian:buster
 
 ENV LANG C.UTF-8
-ENV TZ Europe/Berlin
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
@@ -54,8 +51,6 @@ RUN 	find /etc/mysql/ -name '*.cnf' -print0 \
 # don't reverse lookup hostnames, they are usually another container
 	echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 	
-RUN [ "cross-build-end" ]
-
 VOLUME ["/var/lib/mysql"]
 
 COPY docker-entrypoint.sh /usr/local/bin/
